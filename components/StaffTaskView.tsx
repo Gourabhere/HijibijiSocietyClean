@@ -144,8 +144,9 @@ const StaffTaskView: React.FC<StaffTaskViewProps> = ({ currentUser, logs, onLogT
           videoRef.current.play();
         }
       }, 100);
-    } catch {
-      // Camera not available — fallback: close modal
+    } catch (err) {
+      console.error("Camera error:", err);
+      alert("Unable to access camera. Please ensure you have granted camera permissions and are using HTTPS or localhost.");
       setCameraOpen(false);
       setPendingTask(null);
     }
