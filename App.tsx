@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LayoutDashboard, Users, Package, BarChart3, Moon, Sun, ClipboardList, LogOut, Loader2, Clock } from 'lucide-react';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useAuth } from './contexts/AuthContext';
 import LoginPage from './components/LoginPage';
 import Dashboard from './components/Dashboard';
@@ -216,6 +217,7 @@ const App: React.FC = () => {
 
       <main style={{ flex: 1, padding: '0 16px 100px', overflowY: 'auto' }}>
         {renderContent()}
+        <SpeedInsights />
       </main>
 
       {isAdmin ? (
