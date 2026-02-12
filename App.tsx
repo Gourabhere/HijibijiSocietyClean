@@ -98,6 +98,13 @@ const App: React.FC = () => {
     setSupplyRequests(prev => prev.map(r => r.id === id ? { ...r, status: 'FULFILLED' as const } : r));
   };
 
+  const handleRejectSupply = async (id: string) => {
+    try {
+      await updateSupplyStatus(id, 'REJECTED');
+    } catch { /* continue with local update */ }
+    setSupplyRequests(prev => prev.map(r => r.id === id ? { ...r, status: 'REJECTED' as const } : r));
+  };
+
   const handlePunch = async (log: Omit<PunchLog, 'id'>) => {
     try {
       const saved = await insertPunchLog(log);
@@ -200,6 +207,7 @@ const App: React.FC = () => {
               tasks={[]}
               supplyRequests={supplyRequests}
               onApproveSupply={handleApproveSupply}
+              onRejectSupply={handleRejectSupply}
               staffMembers={staffMembers}
               punchLogs={punchLogs}
               onNavigate={(tab) => setManagerTab(tab as ManagerTab)}
@@ -207,9 +215,11 @@ const App: React.FC = () => {
             />
           );
         case 'STAFF':
-          return <StaffAttendance currentUser={currentUser} punchLogs={punchLogs} onPunch={handlePunch} staffMembers={staffMembers} />;
+          return <StaffAttendance currentUser={currentUser} punchLogs={punchLogs} onPunch={handlePunch} staffMembers={staffMembers} isManagerView={true} />;
         case 'STOCK':
-          return <SupplyRequestView currentUser={currentUser} requests={supplyRequests} onRequest={handleSupplyRequest} staffMembers={staffMembers} />;
+          return <SupplyRequestView currentUser={currentUser} requests={supplyRequests} onRequest={handleSupplyRequest} staffMembers={staffMembers} isManagerView={true} />;
+        case 'LOGS':
+          return <StaffLogsView currentUser={currentUser} logs={logs} staffMembers={staffMembers} isAdmin={true} />;
         default:
           return (
             <Dashboard
@@ -217,6 +227,7 @@ const App: React.FC = () => {
               tasks={[]}
               supplyRequests={supplyRequests}
               onApproveSupply={handleApproveSupply}
+              onRejectSupply={handleRejectSupply}
               staffMembers={staffMembers}
               punchLogs={punchLogs}
               onNavigate={(tab) => setManagerTab(tab as ManagerTab)}

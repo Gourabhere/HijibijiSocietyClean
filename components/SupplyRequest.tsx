@@ -7,6 +7,7 @@ interface SupplyRequestViewProps {
   requests: SupplyRequest[];
   onRequest: (req: Omit<SupplyRequest, 'id'>) => void;
   staffMembers: StaffMember[];
+  isManagerView?: boolean;
 }
 
 const PRESET_ITEMS = [
@@ -18,7 +19,7 @@ const PRESET_ITEMS = [
   'Disinfectant Spray',
 ];
 
-const SupplyRequestView: React.FC<SupplyRequestViewProps> = ({ currentUser, requests, onRequest, staffMembers }) => {
+const SupplyRequestView: React.FC<SupplyRequestViewProps> = ({ currentUser, requests, onRequest, staffMembers, isManagerView = false }) => {
   const [item, setItem] = useState('');
   const [quantity, setQuantity] = useState('');
   const [urgency, setUrgency] = useState<'LOW' | 'MEDIUM' | 'HIGH'>('LOW');
@@ -69,75 +70,77 @@ const SupplyRequestView: React.FC<SupplyRequestViewProps> = ({ currentUser, requ
         </div>
       </div>
 
-      {/* Request Form */}
-      <form onSubmit={handleSubmit}>
-        <div className="neu-card animate-in animate-in-delay-1" style={{ marginBottom: 20, padding: 22 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18, paddingBottom: 14, borderBottom: '1px solid var(--neu-dark)' }}>
-            <div style={{
-              width: 38, height: 38, borderRadius: 12, background: 'var(--coral)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
-            }}>
-              <Package size={16} />
+      {/* Request Form - Hide for Managers */}
+      {!isManagerView && (
+        <form onSubmit={handleSubmit}>
+          <div className="neu-card animate-in animate-in-delay-1" style={{ marginBottom: 20, padding: 22 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18, paddingBottom: 14, borderBottom: '1px solid var(--neu-dark)' }}>
+              <div style={{
+                width: 38, height: 38, borderRadius: 12, background: 'var(--coral)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
+              }}>
+                <Package size={16} />
+              </div>
+              <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>New Request</span>
             </div>
-            <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>New Request</span>
-          </div>
 
-          <div className="neu-input-group" style={{ marginBottom: 14 }}>
-            <label className="neu-label">Item Name</label>
-            <div className="neu-input-wrapper">
-              <input
-                type="text"
-                className="neu-input"
-                value={item}
-                onChange={(e) => setItem(e.target.value)}
-                placeholder="e.g. Floor Cleaner Liquid"
-              />
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', gap: 12, marginBottom: 18 }}>
-            <div className="neu-input-group" style={{ flex: 1 }}>
-              <label className="neu-label">Quantity</label>
+            <div className="neu-input-group" style={{ marginBottom: 14 }}>
+              <label className="neu-label">Item Name</label>
               <div className="neu-input-wrapper">
                 <input
                   type="text"
                   className="neu-input"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  placeholder="e.g. 5 Liters"
+                  value={item}
+                  onChange={(e) => setItem(e.target.value)}
+                  placeholder="e.g. Floor Cleaner Liquid"
                 />
               </div>
             </div>
-            <div className="neu-input-group" style={{ width: 110 }}>
-              <label className="neu-label">Urgency</label>
-              <div className="neu-input-wrapper">
-                <select
-                  value={urgency}
-                  onChange={(e) => setUrgency(e.target.value as any)}
-                  className="neu-input"
-                  style={{ cursor: 'pointer', appearance: 'none' }}
-                >
-                  <option value="LOW">Low</option>
-                  <option value="MEDIUM">Med</option>
-                  <option value="HIGH">High</option>
-                </select>
+
+            <div style={{ display: 'flex', gap: 12, marginBottom: 18 }}>
+              <div className="neu-input-group" style={{ flex: 1 }}>
+                <label className="neu-label">Quantity</label>
+                <div className="neu-input-wrapper">
+                  <input
+                    type="text"
+                    className="neu-input"
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    placeholder="e.g. 5 Liters"
+                  />
+                </div>
+              </div>
+              <div className="neu-input-group" style={{ width: 110 }}>
+                <label className="neu-label">Urgency</label>
+                <div className="neu-input-wrapper">
+                  <select
+                    value={urgency}
+                    onChange={(e) => setUrgency(e.target.value as any)}
+                    className="neu-input"
+                    style={{ cursor: 'pointer', appearance: 'none' }}
+                  >
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM">Med</option>
+                    <option value="HIGH">High</option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
 
-          <button
-            type="submit"
-            disabled={!item || !quantity}
-            className="btn btn-coral"
-            style={{
-              width: '100%', padding: '14px', fontSize: 14, fontWeight: 700, borderRadius: 14,
-              opacity: item && quantity ? 1 : 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
-            }}
-          >
-            <Send size={16} /> Submit Request
-          </button>
-        </div>
-      </form>
+            <button
+              type="submit"
+              disabled={!item || !quantity}
+              className="btn btn-coral"
+              style={{
+                width: '100%', padding: '14px', fontSize: 14, fontWeight: 700, borderRadius: 14,
+                opacity: item && quantity ? 1 : 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+              }}
+            >
+              <Send size={16} /> Submit Request
+            </button>
+          </div>
+        </form>
+      )}
 
       {/* Request History */}
       <div className="animate-in animate-in-delay-2">

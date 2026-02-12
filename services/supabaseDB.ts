@@ -153,7 +153,7 @@ export async function fetchSupplyRequests(): Promise<SupplyRequest[]> {
         item: row.item,
         quantity: row.quantity,
         urgency: row.urgency as 'LOW' | 'MEDIUM' | 'HIGH',
-        status: row.status as 'OPEN' | 'FULFILLED',
+        status: row.status as 'OPEN' | 'FULFILLED' | 'REJECTED',
         requesterId: row.requester_id,
         timestamp: row.timestamp,
     }));
@@ -178,13 +178,13 @@ export async function insertSupplyRequest(req: Omit<SupplyRequest, 'id'>): Promi
         item: data.item,
         quantity: data.quantity,
         urgency: data.urgency as 'LOW' | 'MEDIUM' | 'HIGH',
-        status: data.status as 'OPEN' | 'FULFILLED',
+        status: data.status as 'OPEN' | 'FULFILLED' | 'REJECTED',
         requesterId: data.requester_id,
         timestamp: data.timestamp,
     };
 }
 
-export async function updateSupplyStatus(id: string, status: 'OPEN' | 'FULFILLED'): Promise<void> {
+export async function updateSupplyStatus(id: string, status: 'OPEN' | 'FULFILLED' | 'REJECTED'): Promise<void> {
     const { error } = await supabase
         .from('supply_requests')
         .update({ status })

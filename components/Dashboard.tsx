@@ -1,13 +1,15 @@
 import React from 'react';
-import { TaskLog, StaffMember, TaskDefinition, Frequency, SupplyRequest, PunchLog, BUILDING_STRUCTURE, FLOORS, FLOOR_TASKS, BLOCK_TASKS, COMMON_TASKS } from '../types';
+import { TaskLog, StaffMember, TaskDefinition, Frequency, SupplyRequest, PunchLog, BUILDING_STRUCTURE, FLOORS, FLOOR_TASKS, BLOCK_TASKS, COMMON_TASKS, TaskType } from '../types';
 import { Check, X, MapPin, TrendingUp, Download, Plus, UserPlus } from 'lucide-react';
 import { insertStaffMember, verifyStaffPin } from '../services/supabaseDB';
+import { fetchFlatPaymentStatus } from '../services/collectionsClient';
 
 interface DashboardProps {
   logs: TaskLog[];
   tasks: TaskDefinition[];
   supplyRequests: SupplyRequest[];
   onApproveSupply: (id: string) => void;
+  onRejectSupply: (id: string) => void;
   staffMembers: StaffMember[];
   punchLogs: PunchLog[];
   onNavigate: (tab: string) => void;
@@ -50,17 +52,28 @@ const DonutChart: React.FC<{ percentage: number; size?: number; strokeWidth?: nu
 };
 
 const Dashboard: React.FC<DashboardProps> = ({
-  logs, tasks, supplyRequests, onApproveSupply, staffMembers, punchLogs, onNavigate, onExport
+  logs, tasks, supplyRequests, onApproveSupply, onRejectSupply, staffMembers, punchLogs, onNavigate, onExport
 }) => {
   const [showAddStaffModal, setShowAddStaffModal] = React.useState(false);
+  const [selectedStaff, setSelectedStaff] = React.useState<StaffMember | null>(null);
   const [pin, setPin] = React.useState('');
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [newStaff, setNewStaff] = React.useState({ name: '', role: 'Housekeeper', blockAssignment: '', avatar: '' });
   const [addingStaff, setAddingStaff] = React.useState(false);
+  const [paymentStatus, setPaymentStatus] = React.useState<Map<string, boolean>>(new Map());
+  const [loadingPayment, setLoadingPayment] = React.useState(true);
   const today = new Date().setHours(0, 0, 0, 0);
   const todaysLogs = logs.filter(l => l.timestamp >= today);
 
+  React.useEffect(() => {
+    fetchFlatPaymentStatus().then((map) => {
+      setPaymentStatus(map);
+      setLoadingPayment(false);
+    });
+  }, []);
+
   const totalDailyTasks = React.useMemo(() => {
+    if (loadingPayment) return 0;
     let total = 0;
     // 1. Common Area Tasks
     total += COMMON_TASKS.length;
@@ -71,28 +84,91 @@ const Dashboard: React.FC<DashboardProps> = ({
 
       FLOORS.forEach(floor => {
         const flats = block.flatsPerFloor(floor);
-        // 3. Per-Flat Tasks
-        total += FLOOR_TASKS.filter(t => t.perFlat).length * flats.length;
+        // 3. Per-Flat Tasks (Active ONLY)
+        const activeFlats = flats.filter(flat => {
+          const key = `${block.block}${flat}${floor}`;
+          return paymentStatus.has(key) && paymentStatus.get(key) === true;
+        });
+        total += FLOOR_TASKS.filter(t => t.perFlat).length * activeFlats.length;
         // 4. Per-Floor Tasks
         total += FLOOR_TASKS.filter(t => !t.perFlat).length;
       });
     });
     return total;
-  }, []);
+  }, [loadingPayment, paymentStatus]);
 
-  const completedDaily = todaysLogs.filter(l => l.status === 'COMPLETED').length;
+  const completedDaily = todaysLogs.filter(l => {
+    if (l.status !== 'COMPLETED') return false;
+    // If it's a flat task, valid only if flat is active
+    if (l.flat && l.block && l.floor) {
+      const key = `${l.block}${l.flat}${l.floor}`;
+      // If we have payment status loaded, restrict to active.
+      // If map is empty (loading or error), maybe be lenient?
+      // But for "progress" consistency, let's match the total: strict check.
+      if (!loadingPayment && paymentStatus.size > 0) {
+        return paymentStatus.get(key) === true;
+      }
+    }
+    return true;
+  }).length;
+
   const progress = totalDailyTasks > 0 ? Math.round((completedDaily / totalDailyTasks) * 100) : 0;
 
-  const garbageTasks = tasks.filter(t => t.type.includes('Routine') || t.type.includes('Garbage'));
-  const garbageDone = todaysLogs.filter(l => garbageTasks.some(t => t.id === l.taskId)).length;
-  // Fallback to "Routine Housekeeping" string matching if tasks array is empty/static
-  const garbageLogsCount = todaysLogs.filter(l => l.taskId.includes('Routine') || l.taskId.includes('Garbage')).length;
-  // Heuristic for progress
-  const garbagePercent = Math.min(100, Math.round((garbageLogsCount / 10) * 100)) || 82;
+  const activeStats = React.useMemo(() => {
+    if (loadingPayment) return { garbage: { done: 0, total: 0 }, brooming: { done: 0, total: 0 } };
 
-  const broomTasks = tasks.filter(t => t.type.includes('Brooming'));
-  const broomDone = todaysLogs.filter(l => broomTasks.some(t => t.id === l.taskId)).length;
-  const broomPercent = broomTasks.length > 0 ? Math.round((broomDone / broomTasks.length) * 100) : 66;
+    let garbageTotal = 0;
+    let broomingTotal = 0;
+
+    // Calculate Totals based on Active Flats / Floors
+    BUILDING_STRUCTURE.forEach(block => {
+      FLOORS.forEach(floor => {
+        // Garbage: Per Active Flat
+        const flats = block.flatsPerFloor(floor);
+        const activeFlats = flats.filter(flat => {
+          const key = `${block.block}${flat}${floor}`;
+          return paymentStatus.has(key) && paymentStatus.get(key) === true;
+        });
+        // Assuming 1 Routine Housekeeping task per flat
+        garbageTotal += activeFlats.length;
+
+        // Brooming: Per Floor
+        // Check if Brooming exists in FLOOR_TASKS
+        if (FLOOR_TASKS.some(t => t.type === TaskType.BROOMING)) {
+          broomingTotal += 1;
+        }
+      });
+    });
+
+    // Calculate Done counts
+    // Garbage Done: Status Completed AND TaskType Routine/Garbage AND Flat is Active
+    const garbageDone = todaysLogs.filter(l => {
+      if (l.status !== 'COMPLETED') return false;
+      const isRoutine = l.taskId === TaskType.ROUTINE_HOUSEKEEPING || l.taskId.includes('Routine') || l.taskId.includes('Garbage');
+      if (!isRoutine) return false;
+
+      // Strict Active Check
+      if (l.flat && l.block && l.floor) {
+        const key = `${l.block}${l.flat}${l.floor}`;
+        return paymentStatus.get(key) === true;
+      }
+      return false;
+    }).length;
+
+    // Brooming Done: Status Completed AND TaskType Brooming
+    const broomingDone = todaysLogs.filter(l => {
+      return l.status === 'COMPLETED' && (l.taskId === TaskType.BROOMING || l.taskId.includes('Brooming'));
+    }).length;
+
+    return {
+      garbage: { done: garbageDone, total: garbageTotal },
+      brooming: { done: broomingDone, total: broomingTotal }
+    };
+  }, [loadingPayment, paymentStatus, todaysLogs]);
+
+  const garbagePercent = activeStats.garbage.total > 0 ? Math.round((activeStats.garbage.done / activeStats.garbage.total) * 100) : 0;
+  const broomingPercent = activeStats.brooming.total > 0 ? Math.round((activeStats.brooming.done / activeStats.brooming.total) * 100) : 0;
+
 
   const openRequests = supplyRequests.filter(r => r.status === 'OPEN');
 
@@ -186,6 +262,44 @@ const Dashboard: React.FC<DashboardProps> = ({
         </div>
       )}
 
+      {/* Staff Details Modal */}
+      {selectedStaff && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.5)', zIndex: 1000,
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }} onClick={() => setSelectedStaff(null)}>
+          <div className="neu-card" style={{ width: 300, padding: 24, background: 'var(--bg-card)', position: 'relative' }} onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => setSelectedStaff(null)}
+              style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
+            >
+              <X size={20} />
+            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 20 }}>
+              <img src={selectedStaff.avatar} alt={selectedStaff.name} className="avatar" style={{ width: 80, height: 80, marginBottom: 12 }} />
+              <h3 style={{ margin: 0, fontSize: 18 }}>{selectedStaff.name}</h3>
+              <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>{selectedStaff.role}</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', background: 'var(--bg-inset)', borderRadius: 8 }}>
+                <span style={{ fontSize: 13, fontWeight: 600 }}>Block Assignment</span>
+                <span style={{ fontSize: 13 }}>{selectedStaff.blockAssignment}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', background: 'var(--bg-inset)', borderRadius: 8 }}>
+                <span style={{ fontSize: 13, fontWeight: 600 }}>Tasks Today</span>
+                <span style={{ fontSize: 13 }}>
+                  {logs.filter(l => l.staffId === selectedStaff.id && l.timestamp >= today && l.status === 'COMPLETED').length}
+                </span>
+              </div>
+            </div>
+            <div style={{ marginTop: 20, textAlign: 'center' }}>
+              <button className="neu-button" style={{ width: '100%' }} onClick={() => setSelectedStaff(null)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* On-Duty Staff */}
       <div className="animate-in" style={{ marginBottom: 24 }}>
         <div className="section-header">
@@ -216,7 +330,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                   const staffTaskCount = todaysLogs.filter(l => l.staffId === s.id && l.status === 'COMPLETED').length;
 
                   return (
-                    <div key={s.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, minWidth: 72 }}>
+                    <div key={s.id} onClick={() => setSelectedStaff(s)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, minWidth: 72, cursor: 'pointer' }}>
                       <img src={s.avatar} alt={s.name} className="avatar avatar-lg" style={{ width: 56, height: 56 }} />
                       <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', textAlign: 'center', lineHeight: 1.2 }}>
                         {s.name.split(' ')[0]} {s.name.split(' ')[1]?.[0]}.
@@ -269,7 +383,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--blue)' }} />
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)' }}>Brooming: {broomPercent}%</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)' }}>Brooming: {broomingPercent}%</span>
           </div>
         </div>
       </div>
@@ -283,11 +397,10 @@ const Dashboard: React.FC<DashboardProps> = ({
           )}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {openRequests.length === 0 && supplyRequests.length === 0 ? (
-            <>
-              <SupplyCard item="Cleaning Liquid (5L)" requester="Ravi" time="10m ago" onApprove={() => { }} onReject={() => { }} />
-              <SupplyCard item="New Heavy Broom" requester="Anita" time="45m ago" onApprove={() => { }} onReject={() => { }} />
-            </>
+          {openRequests.length === 0 ? (
+            <div style={{ padding: 20, textAlign: 'center', color: 'var(--text-muted)', fontSize: 13, background: 'var(--bg-inset)', borderRadius: 12 }}>
+              No pending supply requests.
+            </div>
           ) : (
             openRequests.map(req => {
               const staff = staffMembers.find(s => s.id === req.requesterId);
@@ -299,7 +412,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                   requester={staff?.name.split(' ')[0] || 'Staff'}
                   time={`${ago}m ago`}
                   onApprove={() => onApproveSupply(req.id)}
-                  onReject={() => { }}
+                  onReject={() => onRejectSupply(req.id)}
                 />
               );
             })

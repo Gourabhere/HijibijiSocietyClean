@@ -8,35 +8,37 @@ interface StaffLogsViewProps {
     currentUser: number;
     logs: TaskLog[];
     staffMembers: StaffMember[];
+    isAdmin?: boolean;
 }
 
-const StaffLogsView: React.FC<StaffLogsViewProps> = ({ currentUser, logs, staffMembers }) => {
-    // Filter logs for current user
-    const myLogs = useMemo(() => {
+const StaffLogsView: React.FC<StaffLogsViewProps> = ({ currentUser, logs, staffMembers, isAdmin = false }) => {
+    // Filter logs for current user (or all if admin)
+    const displayLogs = useMemo(() => {
+        if (isAdmin) return logs.sort((a, b) => b.timestamp - a.timestamp);
         return logs.filter(l => l.staffId === currentUser).sort((a, b) => b.timestamp - a.timestamp);
-    }, [logs, currentUser]);
+    }, [logs, currentUser, isAdmin]);
 
     const today = new Date().setHours(0, 0, 0, 0);
     const weekAgo = new Date().setDate(new Date().getDate() - 7);
 
     // Stats calculation
     const stats = useMemo(() => {
-        const todayCount = myLogs.filter(l => l.timestamp >= today).length;
-        const weekCount = myLogs.filter(l => l.timestamp >= weekAgo).length;
+        const todayCount = displayLogs.filter(l => l.timestamp >= today).length;
+        const weekCount = displayLogs.filter(l => l.timestamp >= weekAgo).length;
 
         // Breakdown
-        const garbage = myLogs.filter(l => l.taskId.includes('Routine') || l.taskId.includes('Garbage')).length;
-        const brooming = myLogs.filter(l => l.taskId.includes('broom') || l.taskId.includes('sweep')).length;
-        const mopping = myLogs.filter(l => l.taskId.includes('mop')).length;
-        const other = myLogs.length - garbage - brooming - mopping;
+        const garbage = displayLogs.filter(l => l.taskId.includes('Routine') || l.taskId.includes('Garbage')).length;
+        const brooming = displayLogs.filter(l => l.taskId.includes('broom') || l.taskId.includes('sweep')).length;
+        const mopping = displayLogs.filter(l => l.taskId.includes('mop')).length;
+        const other = displayLogs.length - garbage - brooming - mopping;
 
         return { todayCount, weekCount, breakdown: { garbage, brooming, mopping, other } };
-    }, [myLogs, today, weekAgo]);
+    }, [displayLogs, today, weekAgo]);
 
     // Group logs by date
     const groupedLogs = useMemo(() => {
         const groups: { [key: string]: TaskLog[] } = {};
-        myLogs.forEach(log => {
+        displayLogs.forEach(log => {
             const date = new Date(log.timestamp).toLocaleDateString('en-IN', {
                 day: 'numeric', month: 'short', year: 'numeric'
             });
@@ -44,7 +46,7 @@ const StaffLogsView: React.FC<StaffLogsViewProps> = ({ currentUser, logs, staffM
             groups[date].push(log);
         });
         return groups;
-    }, [myLogs]);
+    }, [displayLogs]);
 
     // Helper to determine task label from ID (simple heuristic since task definitions are dynamic now)
     const getTaskLabel = (taskId: string) => {
@@ -124,9 +126,9 @@ const StaffLogsView: React.FC<StaffLogsViewProps> = ({ currentUser, logs, staffM
                     Reverting to list as per user request for "Calendar Format" which implies a visual calendar is desired.
                     Implementing a simple month view.
                 */}
-            <CalendarView logs={myLogs} />
+            <CalendarView logs={displayLogs} staffMembers={staffMembers} isAdmin={isAdmin} />
 
-            {myLogs.length === 0 && (
+            {displayLogs.length === 0 && (
                 <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
                     <div style={{ fontSize: 40, marginBottom: 10 }}>📜</div>
                     <div style={{ fontWeight: 600 }}>No logs found</div>
@@ -152,7 +154,7 @@ const StatItem: React.FC<{ icon: React.ReactNode; count: number; label: string; 
     </div>
 );
 
-const CalendarView: React.FC<{ logs: TaskLog[] }> = ({ logs }) => {
+const CalendarView: React.FC<{ logs: TaskLog[]; staffMembers: StaffMember[]; isAdmin: boolean }> = ({ logs, staffMembers, isAdmin }) => {
     const [selectedDate, setSelectedDate] = React.useState(new Date());
 
     const daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
@@ -211,22 +213,38 @@ const CalendarView: React.FC<{ logs: TaskLog[] }> = ({ logs }) => {
                 {selectedDetails.length === 0 ? (
                     <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 20, fontSize: 13 }}>No activity on this date</div>
                 ) : (
-                    selectedDetails.map(log => (
-                        <div key={log.id} className="neu-card" style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px' }}>
-                            <div style={{
-                                width: 36, height: 36, borderRadius: 12, background: 'var(--bg-inset)',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18
-                            }}>
-                                {getTaskIcon(log.taskId.includes('Routine') ? TaskType.ROUTINE_HOUSEKEEPING : TaskType.GLASS_CLEANING)}
-                            </div>
-                            <div>
-                                <div style={{ fontSize: 14, fontWeight: 700 }}>{log.taskId}</div>
-                                <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-                                    {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    selectedDetails.map(log => {
+                        const staff = staffMembers.find(s => s.id === log.staffId);
+                        return (
+                            <div key={log.id} className="neu-card" style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px' }}>
+                                <div style={{
+                                    width: 36, height: 36, borderRadius: 12, background: 'var(--bg-inset)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
+                                    flexShrink: 0
+                                }}>
+                                    {getTaskIcon(log.taskId.includes('Routine') ? TaskType.ROUTINE_HOUSEKEEPING : TaskType.GLASS_CLEANING)}
+                                </div>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                    <div style={{ fontSize: 14, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{log.taskId}</div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
+                                        <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                                            {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                            {isAdmin && staff && (
+                                                <span style={{ color: 'var(--blue)', fontWeight: 600, marginLeft: 6 }}>
+                                                    • {staff.name.split(' ')[0]}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {log.block && (
+                                            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-secondary)', background: 'var(--bg-inset)', padding: '2px 6px', borderRadius: 4 }}>
+                                                B{log.block} {log.flat ? `- ${log.flat}` : ''}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
         </div>

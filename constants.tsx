@@ -12,7 +12,7 @@ import {
 export const getTaskIcon = (type: TaskType): React.ReactElement => {
   const iconStyle = { width: 20, height: 20 };
   switch (type) {
-    case TaskType.GARBAGE_COLLECTION: return <Trash2 style={{ ...iconStyle, color: '#ef4444' }} />;
+    case TaskType.ROUTINE_HOUSEKEEPING: return <Trash2 style={{ ...iconStyle, color: '#ef4444' }} />;
     case TaskType.BROOMING: return <Wind style={{ ...iconStyle, color: '#f97316' }} />;
     case TaskType.MOPPING: return <Droplets style={{ ...iconStyle, color: '#3b82f6' }} />;
     case TaskType.DRIVEWAY: return <CarFront style={{ ...iconStyle, color: '#64748b' }} />;

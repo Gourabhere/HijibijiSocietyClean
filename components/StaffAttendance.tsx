@@ -7,9 +7,10 @@ interface StaffAttendanceProps {
     punchLogs: PunchLog[];
     onPunch: (log: Omit<PunchLog, 'id'>) => void;
     staffMembers: StaffMember[];
+    isManagerView?: boolean;
 }
 
-const StaffAttendance: React.FC<StaffAttendanceProps> = ({ currentUser, punchLogs, onPunch, staffMembers }) => {
+const StaffAttendance: React.FC<StaffAttendanceProps> = ({ currentUser, punchLogs, onPunch, staffMembers, isManagerView = false }) => {
     const [currentTime, setCurrentTime] = useState(new Date());
     const staff = staffMembers.find(s => s.id === currentUser);
 
@@ -18,8 +19,66 @@ const StaffAttendance: React.FC<StaffAttendanceProps> = ({ currentUser, punchLog
         return () => clearInterval(interval);
     }, []);
 
+    const todayStart = new Date().setHours(0, 0, 0, 0);
+
+    // If Manager View, show list of all staff statuses
+    if (isManagerView) {
+        return (
+            <div className="animate-in" style={{ paddingBottom: 20 }}>
+                <div className="section-header">
+                    <span className="section-title">Staff Attendance Overview</span>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {staffMembers.map(s => {
+                        const sLogs = punchLogs
+                            .filter(l => l.staffId === s.id && l.timestamp >= todayStart)
+                            .sort((a, b) => b.timestamp - a.timestamp);
+                        const isPunchedIn = sLogs[0]?.type === 'IN';
+                        const lastPunchTime = sLogs[0] ? new Date(sLogs[0].timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A';
+
+                        // Calculate hours
+                        let totalMs = 0;
+                        const sorted = [...sLogs].sort((a, b) => a.timestamp - b.timestamp);
+                        for (let i = 0; i < sorted.length; i++) {
+                            if (sorted[i].type === 'IN') {
+                                const outTime = sorted[i + 1]?.type === 'OUT' ? sorted[i + 1].timestamp : Date.now();
+                                totalMs += outTime - sorted[i].timestamp;
+                            }
+                        }
+                        const hours = Math.floor(totalMs / 3600000); // Simple hours for list
+
+                        return (
+                            <div key={s.id} className="neu-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                    <img src={s.avatar} alt={s.name} className="avatar" />
+                                    <div>
+                                        <div style={{ fontWeight: 700 }}>{s.name}</div>
+                                        <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{s.role}</div>
+                                    </div>
+                                </div>
+                                <div style={{ textAlign: 'right' }}>
+                                    <div style={{
+                                        fontSize: 12, fontWeight: 700,
+                                        color: isPunchedIn ? 'var(--green)' : 'var(--text-muted)',
+                                        background: isPunchedIn ? 'var(--green-light)' : 'var(--bg-inset)',
+                                        padding: '4px 8px', borderRadius: 6, display: 'inline-block', marginBottom: 4
+                                    }}>
+                                        {isPunchedIn ? 'ON DUTY' : 'OFF DUTY'}
+                                    </div>
+                                    <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                                        {isPunchedIn ? `Since ${lastPunchTime}` : `Last: ${lastPunchTime}`}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    }
+
     const todaysLogs = punchLogs
-        .filter(l => l.staffId === currentUser && l.timestamp >= new Date().setHours(0, 0, 0, 0))
+        .filter(l => l.staffId === currentUser && l.timestamp >= todayStart)
         .sort((a, b) => b.timestamp - a.timestamp);
 
     const lastPunch = todaysLogs[0];

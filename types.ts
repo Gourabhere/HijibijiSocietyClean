@@ -45,7 +45,7 @@ export interface SupplyRequest {
   item: string;
   quantity: string;
   urgency: 'LOW' | 'MEDIUM' | 'HIGH';
-  status: 'OPEN' | 'FULFILLED';
+  status: 'OPEN' | 'FULFILLED' | 'REJECTED';
   requesterId: number;
   timestamp: number;
 }
