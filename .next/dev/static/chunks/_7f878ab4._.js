@@ -6403,6 +6403,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-client] (ecmascript) <export default as Trash2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wind$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Wind$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/wind.js [app-client] (ecmascript) <export default as Wind>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sparkles.js [app-client] (ecmascript) <export default as Sparkles>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-left.js [app-client] (ecmascript) <export default as ChevronLeft>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chevron-right.js [app-client] (ecmascript) <export default as ChevronRight>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-client] (ecmascript) <export default as X>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Image$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/image.js [app-client] (ecmascript) <export default as Image>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/grid-3x3.js [app-client] (ecmascript) <export default as Grid>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__List$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/list.js [app-client] (ecmascript) <export default as List>");
 ;
 var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature();
 "use client";
@@ -6412,15 +6418,20 @@ var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.sign
 ;
 const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
     _s();
+    const [viewMode, setViewMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('ACTIVITY');
+    const [selectedDate, setSelectedDate] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(new Date());
+    const [showCalendar, setShowCalendar] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [selectedImage, setSelectedImage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     // Filter logs for current user (or all if admin)
     const displayLogs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "StaffLogsView.useMemo[displayLogs]": ()=>{
-            if (isAdmin) return logs.sort({
-                "StaffLogsView.useMemo[displayLogs]": (a, b)=>b.timestamp - a.timestamp
-            }["StaffLogsView.useMemo[displayLogs]"]);
-            return logs.filter({
-                "StaffLogsView.useMemo[displayLogs]": (l)=>l.staffId === currentUser
-            }["StaffLogsView.useMemo[displayLogs]"]).sort({
+            let filtered = logs;
+            if (!isAdmin) {
+                filtered = logs.filter({
+                    "StaffLogsView.useMemo[displayLogs]": (l)=>l.staffId === currentUser
+                }["StaffLogsView.useMemo[displayLogs]"]);
+            }
+            return filtered.sort({
                 "StaffLogsView.useMemo[displayLogs]": (a, b)=>b.timestamp - a.timestamp
             }["StaffLogsView.useMemo[displayLogs]"]);
         }
@@ -6467,46 +6478,150 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
         today,
         weekAgo
     ]);
-    // Group logs by date
-    const groupedLogs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "StaffLogsView.useMemo[groupedLogs]": ()=>{
-            const groups = {};
-            displayLogs.forEach({
-                "StaffLogsView.useMemo[groupedLogs]": (log)=>{
-                    const date = new Date(log.timestamp).toLocaleDateString('en-IN', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric'
-                    });
-                    if (!groups[date]) groups[date] = [];
-                    groups[date].push(log);
+    const dateFilteredLogs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "StaffLogsView.useMemo[dateFilteredLogs]": ()=>{
+            return displayLogs.filter({
+                "StaffLogsView.useMemo[dateFilteredLogs]": (l)=>{
+                    const d = new Date(l.timestamp);
+                    return d.getDate() === selectedDate.getDate() && d.getMonth() === selectedDate.getMonth() && d.getFullYear() === selectedDate.getFullYear();
                 }
-            }["StaffLogsView.useMemo[groupedLogs]"]);
-            return groups;
+            }["StaffLogsView.useMemo[dateFilteredLogs]"]);
         }
-    }["StaffLogsView.useMemo[groupedLogs]"], [
-        displayLogs
+    }["StaffLogsView.useMemo[dateFilteredLogs]"], [
+        displayLogs,
+        selectedDate
     ]);
-    // Helper to determine task label from ID (simple heuristic since task definitions are dynamic now)
-    const getTaskLabel = (taskId)=>{
-        if (taskId.includes('garbage')) return 'Garbage Collection';
-        if (taskId.includes('broom')) return 'Brooming';
-        if (taskId.includes('mop')) return 'Mopping';
-        if (taskId.includes('glass')) return 'Glass Cleaning';
-        if (taskId.includes('driveway')) return 'Driveway Cleaning';
-        return 'Task Completed';
-    };
-    const getTaskType = (taskId)=>{
-        if (taskId.includes('Routine') || taskId.includes('Garbage')) return __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TaskType"].ROUTINE_HOUSEKEEPING;
-        if (taskId.includes('broom')) return __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TaskType"].BROOMING;
-        if (taskId.includes('mop')) return __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TaskType"].MOPPING;
-        if (taskId.includes('glass')) return __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TaskType"].GLASS_CLEANING;
-        if (taskId.includes('driveway')) return __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TaskType"].DRIVEWAY;
-        return __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TaskType"].GLASS_CLEANING; // Default fallback
-    };
+    // Group logs by date for list view (if needed, but we are focusing on date selection now)
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "animate-in",
         children: [
+            selectedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0,0,0,0.9)',
+                    zIndex: 2000,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 20
+                },
+                onClick: ()=>setSelectedImage(null),
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    style: {
+                        position: 'relative',
+                        maxWidth: '100%',
+                        maxHeight: '90%'
+                    },
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: ()=>setSelectedImage(null),
+                            style: {
+                                position: 'absolute',
+                                top: -40,
+                                right: 0,
+                                background: 'none',
+                                border: 'none',
+                                color: 'white'
+                            },
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                size: 24
+                            }, void 0, false, {
+                                fileName: "[project]/components/StaffLogsView.tsx",
+                                lineNumber: 75,
+                                columnNumber: 29
+                            }, ("TURBOPACK compile-time value", void 0))
+                        }, void 0, false, {
+                            fileName: "[project]/components/StaffLogsView.tsx",
+                            lineNumber: 68,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                            src: selectedImage,
+                            alt: "Proof",
+                            style: {
+                                maxWidth: '100%',
+                                maxHeight: '80vh',
+                                borderRadius: 8
+                            }
+                        }, void 0, false, {
+                            fileName: "[project]/components/StaffLogsView.tsx",
+                            lineNumber: 77,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0))
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/components/StaffLogsView.tsx",
+                    lineNumber: 67,
+                    columnNumber: 21
+                }, ("TURBOPACK compile-time value", void 0))
+            }, void 0, false, {
+                fileName: "[project]/components/StaffLogsView.tsx",
+                lineNumber: 61,
+                columnNumber: 17
+            }, ("TURBOPACK compile-time value", void 0)),
+            showCalendar && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: 'rgba(0,0,0,0.5)',
+                    zIndex: 1000,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                },
+                onClick: ()=>setShowCalendar(false),
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "neu-card",
+                    style: {
+                        padding: 20,
+                        background: 'var(--bg-card)',
+                        width: 320
+                    },
+                    onClick: (e)=>e.stopPropagation(),
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(CalendarPicker, {
+                            selectedDate: selectedDate,
+                            onSelect: (d)=>{
+                                setSelectedDate(d);
+                                setShowCalendar(false);
+                            },
+                            logs: displayLogs
+                        }, void 0, false, {
+                            fileName: "[project]/components/StaffLogsView.tsx",
+                            lineNumber: 90,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0)),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            className: "neu-button",
+                            style: {
+                                width: '100%',
+                                marginTop: 16
+                            },
+                            onClick: ()=>setShowCalendar(false),
+                            children: "Close"
+                        }, void 0, false, {
+                            fileName: "[project]/components/StaffLogsView.tsx",
+                            lineNumber: 91,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0))
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/components/StaffLogsView.tsx",
+                    lineNumber: 89,
+                    columnNumber: 21
+                }, ("TURBOPACK compile-time value", void 0))
+            }, void 0, false, {
+                fileName: "[project]/components/StaffLogsView.tsx",
+                lineNumber: 84,
+                columnNumber: 17
+            }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "section-header",
                 children: [
@@ -6515,7 +6630,7 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                         children: "Performance Overview"
                     }, void 0, false, {
                         fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 73,
+                        lineNumber: 97,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -6523,13 +6638,13 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                         children: "LIVE STATS"
                     }, void 0, false, {
                         fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 74,
+                        lineNumber: 98,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 72,
+                lineNumber: 96,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6566,12 +6681,12 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                     size: 24
                                 }, void 0, false, {
                                     fileName: "[project]/components/StaffLogsView.tsx",
-                                    lineNumber: 85,
+                                    lineNumber: 109,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 80,
+                                lineNumber: 104,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6584,7 +6699,7 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                 children: stats.todayCount
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 87,
+                                lineNumber: 111,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6598,13 +6713,13 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                 children: "Tasks Today"
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 88,
+                                lineNumber: 112,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 79,
+                        lineNumber: 103,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6633,12 +6748,12 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                     size: 24
                                 }, void 0, false, {
                                     fileName: "[project]/components/StaffLogsView.tsx",
-                                    lineNumber: 97,
+                                    lineNumber: 121,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 92,
+                                lineNumber: 116,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6651,7 +6766,7 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                 children: stats.weekCount
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 99,
+                                lineNumber: 123,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6665,19 +6780,19 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                 children: "Tasks This Week"
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 100,
+                                lineNumber: 124,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 91,
+                        lineNumber: 115,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 78,
+                lineNumber: 102,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6697,12 +6812,12 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                             children: "WORK BREAKDOWN"
                         }, void 0, false, {
                             fileName: "[project]/components/StaffLogsView.tsx",
-                            lineNumber: 107,
+                            lineNumber: 131,
                             columnNumber: 21
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 106,
+                        lineNumber: 130,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6716,7 +6831,7 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                     size: 16
                                 }, void 0, false, {
                                     fileName: "[project]/components/StaffLogsView.tsx",
-                                    lineNumber: 110,
+                                    lineNumber: 134,
                                     columnNumber: 37
                                 }, void 0),
                                 count: stats.breakdown.garbage,
@@ -6724,7 +6839,7 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                 color: "var(--red)"
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 110,
+                                lineNumber: 134,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatItem, {
@@ -6732,7 +6847,7 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                     size: 16
                                 }, void 0, false, {
                                     fileName: "[project]/components/StaffLogsView.tsx",
-                                    lineNumber: 111,
+                                    lineNumber: 135,
                                     columnNumber: 37
                                 }, void 0),
                                 count: stats.breakdown.brooming,
@@ -6740,7 +6855,7 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                 color: "var(--orange)"
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 111,
+                                lineNumber: 135,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(StatItem, {
@@ -6748,7 +6863,7 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                     size: 16
                                 }, void 0, false, {
                                     fileName: "[project]/components/StaffLogsView.tsx",
-                                    lineNumber: 112,
+                                    lineNumber: 136,
                                     columnNumber: 37
                                 }, void 0),
                                 count: stats.breakdown.mopping,
@@ -6756,338 +6871,182 @@ const StaffLogsView = ({ currentUser, logs, staffMembers, isAdmin = false })=>{
                                 color: "var(--blue)"
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 112,
+                                lineNumber: 136,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 109,
+                        lineNumber: 133,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 105,
-                columnNumber: 13
-            }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "section-header",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                    className: "section-title",
-                    children: "Activity History"
-                }, void 0, false, {
-                    fileName: "[project]/components/StaffLogsView.tsx",
-                    lineNumber: 117,
-                    columnNumber: 17
-                }, ("TURBOPACK compile-time value", void 0))
-            }, void 0, false, {
-                fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 116,
-                columnNumber: 13
-            }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                style: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 24
-                }
-            }, void 0, false, {
-                fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 121,
-                columnNumber: 13
-            }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(CalendarView, {
-                logs: displayLogs,
-                staffMembers: staffMembers,
-                isAdmin: isAdmin
-            }, void 0, false, {
-                fileName: "[project]/components/StaffLogsView.tsx",
                 lineNumber: 129,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
-            displayLogs.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                style: {
-                    textAlign: 'center',
-                    padding: '40px 0',
-                    color: 'var(--text-muted)'
-                },
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        style: {
-                            fontSize: 40,
-                            marginBottom: 10
-                        },
-                        children: "📜"
-                    }, void 0, false, {
-                        fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 133,
-                        columnNumber: 21
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        style: {
-                            fontWeight: 600
-                        },
-                        children: "No logs found"
-                    }, void 0, false, {
-                        fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 134,
-                        columnNumber: 21
-                    }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        style: {
-                            fontSize: 12
-                        },
-                        children: "Get started by completing tasks!"
-                    }, void 0, false, {
-                        fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 135,
-                        columnNumber: 21
-                    }, ("TURBOPACK compile-time value", void 0))
-                ]
-            }, void 0, true, {
-                fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 132,
-                columnNumber: 17
-            }, ("TURBOPACK compile-time value", void 0))
-        ]
-    }, void 0, true, {
-        fileName: "[project]/components/StaffLogsView.tsx",
-        lineNumber: 71,
-        columnNumber: 9
-    }, ("TURBOPACK compile-time value", void 0));
-};
-_s(StaffLogsView, "sZHMqokJ4I9RwqHgFOJAXxAdANo=");
-_c = StaffLogsView;
-const StatItem = ({ icon, count, label, color })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        style: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 6
-        },
-        children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 style: {
-                    width: 36,
-                    height: 36,
-                    borderRadius: 12,
-                    background: 'var(--bg-card)',
-                    boxShadow: 'var(--neu-raised-sm)',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    color: color
-                },
-                children: icon
-            }, void 0, false, {
-                fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 145,
-                columnNumber: 9
-            }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                style: {
-                    fontSize: 16,
-                    fontWeight: 800,
-                    color: 'var(--text-primary)'
-                },
-                children: count
-            }, void 0, false, {
-                fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 152,
-                columnNumber: 9
-            }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                style: {
-                    fontSize: 10,
-                    fontWeight: 600,
-                    color: 'var(--text-muted)'
-                },
-                children: label
-            }, void 0, false, {
-                fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 153,
-                columnNumber: 9
-            }, ("TURBOPACK compile-time value", void 0))
-        ]
-    }, void 0, true, {
-        fileName: "[project]/components/StaffLogsView.tsx",
-        lineNumber: 144,
-        columnNumber: 5
-    }, ("TURBOPACK compile-time value", void 0));
-_c1 = StatItem;
-const CalendarView = ({ logs, staffMembers, isAdmin })=>{
-    _s1();
-    const [selectedDate, setSelectedDate] = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].useState(new Date());
-    const daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
-    const firstDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1).getDay();
-    const days = Array.from({
-        length: daysInMonth
-    }, (_, i)=>i + 1);
-    const blanks = Array.from({
-        length: firstDay
-    }, (_, i)=>i);
-    const selectedDetails = logs.filter((l)=>{
-        const d = new Date(l.timestamp);
-        return d.getDate() === selectedDate.getDate() && d.getMonth() === selectedDate.getMonth() && d.getFullYear() === selectedDate.getFullYear();
-    });
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "animate-in",
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "neu-card",
-                style: {
-                    padding: 20,
+                    justifyContent: 'space-between',
                     marginBottom: 20
                 },
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         style: {
                             display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            marginBottom: 16
+                            gap: 8,
+                            background: 'var(--bg-inset)',
+                            padding: 4,
+                            borderRadius: 12
                         },
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                onClick: ()=>setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth() - 1, 1)),
+                                onClick: ()=>setViewMode('ACTIVITY'),
                                 style: {
+                                    padding: '8px 16px',
+                                    borderRadius: 8,
                                     border: 'none',
-                                    background: 'none',
-                                    fontSize: 18,
-                                    cursor: 'pointer'
+                                    background: viewMode === 'ACTIVITY' ? 'var(--bg-card)' : 'transparent',
+                                    color: viewMode === 'ACTIVITY' ? 'var(--blue)' : 'var(--text-muted)',
+                                    fontWeight: 700,
+                                    fontSize: 12,
+                                    cursor: 'pointer',
+                                    boxShadow: viewMode === 'ACTIVITY' ? 'var(--neu-raised-sm)' : 'none',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 6
                                 },
-                                children: "←"
-                            }, void 0, false, {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__List$3e$__["List"], {
+                                        size: 14
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/StaffLogsView.tsx",
+                                        lineNumber: 154,
+                                        columnNumber: 25
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    " Activity"
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 178,
+                                lineNumber: 143,
                                 columnNumber: 21
                             }, ("TURBOPACK compile-time value", void 0)),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            (isAdmin || true) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>setViewMode('REVIEW'),
                                 style: {
-                                    fontSize: 16,
-                                    fontWeight: 700
-                                },
-                                children: selectedDate.toLocaleDateString('en-IN', {
-                                    month: 'long',
-                                    year: 'numeric'
-                                })
-                            }, void 0, false, {
-                                fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 179,
-                                columnNumber: 21
-                            }, ("TURBOPACK compile-time value", void 0)),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                onClick: ()=>setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 1)),
-                                style: {
+                                    padding: '8px 16px',
+                                    borderRadius: 8,
                                     border: 'none',
-                                    background: 'none',
-                                    fontSize: 18,
-                                    cursor: 'pointer'
+                                    background: viewMode === 'REVIEW' ? 'var(--bg-card)' : 'transparent',
+                                    color: viewMode === 'REVIEW' ? 'var(--blue)' : 'var(--text-muted)',
+                                    fontWeight: 700,
+                                    fontSize: 12,
+                                    cursor: 'pointer',
+                                    boxShadow: viewMode === 'REVIEW' ? 'var(--neu-raised-sm)' : 'none',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 6
                                 },
-                                children: "→"
-                            }, void 0, false, {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
+                                        size: 14
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/StaffLogsView.tsx",
+                                        lineNumber: 168,
+                                        columnNumber: 29
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    " Review"
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 180,
-                                columnNumber: 21
+                                lineNumber: 157,
+                                columnNumber: 25
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 177,
+                        lineNumber: 142,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setShowCalendar(true),
+                        className: "neu-button",
                         style: {
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(7, 1fr)',
-                            gap: 8,
-                            textAlign: 'center'
+                            padding: '8px 12px',
+                            fontSize: 12,
+                            background: 'var(--bg-card)',
+                            color: 'var(--text-primary)'
                         },
                         children: [
-                            [
-                                'S',
-                                'M',
-                                'T',
-                                'W',
-                                'T',
-                                'F',
-                                'S'
-                            ].map((d)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    style: {
-                                        fontSize: 10,
-                                        fontWeight: 700,
-                                        color: 'var(--text-muted)'
-                                    },
-                                    children: d
-                                }, d, false, {
-                                    fileName: "[project]/components/StaffLogsView.tsx",
-                                    lineNumber: 185,
-                                    columnNumber: 67
-                                }, ("TURBOPACK compile-time value", void 0))),
-                            blanks.map((b)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {}, `blank-${b}`, false, {
-                                    fileName: "[project]/components/StaffLogsView.tsx",
-                                    lineNumber: 186,
-                                    columnNumber: 38
-                                }, ("TURBOPACK compile-time value", void 0))),
-                            days.map((d)=>{
-                                const dateStr = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), d).setHours(0, 0, 0, 0);
-                                const hasLogs = logs.some((l)=>new Date(l.timestamp).setHours(0, 0, 0, 0) === dateStr);
-                                const isSelected = d === selectedDate.getDate();
-                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    onClick: ()=>setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), d)),
-                                    style: {
-                                        width: 32,
-                                        height: 32,
-                                        borderRadius: '50%',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        background: isSelected ? 'var(--blue)' : hasLogs ? 'var(--green-light)' : 'transparent',
-                                        color: isSelected ? 'white' : hasLogs ? 'var(--green)' : 'var(--text-primary)',
-                                        fontWeight: isSelected || hasLogs ? 700 : 400,
-                                        margin: '0 auto',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
-                                    },
-                                    children: d
-                                }, d, false, {
-                                    fileName: "[project]/components/StaffLogsView.tsx",
-                                    lineNumber: 193,
-                                    columnNumber: 29
-                                }, ("TURBOPACK compile-time value", void 0));
+                            "📅 ",
+                            selectedDate.toLocaleDateString('en-IN', {
+                                day: 'numeric',
+                                month: 'short'
                             })
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 184,
+                        lineNumber: 173,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 175,
+                lineNumber: 141,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "section-header",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                        className: "section-title",
+                        children: viewMode === 'ACTIVITY' ? 'Activity Log' : 'Housekeeping Review'
+                    }, void 0, false, {
+                        fileName: "[project]/components/StaffLogsView.tsx",
+                        lineNumber: 183,
+                        columnNumber: 17
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                        className: "section-label",
+                        children: selectedDate.toLocaleDateString('en-IN', {
+                            weekday: 'long',
+                            month: 'long',
+                            day: 'numeric'
+                        })
+                    }, void 0, false, {
+                        fileName: "[project]/components/StaffLogsView.tsx",
+                        lineNumber: 186,
+                        columnNumber: 17
+                    }, ("TURBOPACK compile-time value", void 0))
+                ]
+            }, void 0, true, {
+                fileName: "[project]/components/StaffLogsView.tsx",
+                lineNumber: 182,
+                columnNumber: 13
+            }, ("TURBOPACK compile-time value", void 0)),
+            viewMode === 'ACTIVITY' ? // Activity List View
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 style: {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: 12
                 },
-                children: selectedDetails.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: dateFilteredLogs.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     style: {
                         textAlign: 'center',
                         color: 'var(--text-muted)',
-                        padding: 20,
+                        padding: 40,
                         fontSize: 13
                     },
-                    children: "No activity on this date"
+                    children: "No activity recorded for this date"
                 }, void 0, false, {
                     fileName: "[project]/components/StaffLogsView.tsx",
-                    lineNumber: 214,
-                    columnNumber: 21
-                }, ("TURBOPACK compile-time value", void 0)) : selectedDetails.map((log)=>{
+                    lineNumber: 195,
+                    columnNumber: 25
+                }, ("TURBOPACK compile-time value", void 0)) : dateFilteredLogs.map((log)=>{
                     const staff = staffMembers.find((s)=>s.id === log.staffId);
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "neu-card",
@@ -7113,8 +7072,8 @@ const CalendarView = ({ logs, staffMembers, isAdmin })=>{
                                 children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$constants$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getTaskIcon"])(log.taskId.includes('Routine') ? __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TaskType"].ROUTINE_HOUSEKEEPING : __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TaskType"].GLASS_CLEANING)
                             }, void 0, false, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 220,
-                                columnNumber: 33
+                                lineNumber: 203,
+                                columnNumber: 37
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 style: {
@@ -7133,8 +7092,8 @@ const CalendarView = ({ logs, staffMembers, isAdmin })=>{
                                         children: log.taskId
                                     }, void 0, false, {
                                         fileName: "[project]/components/StaffLogsView.tsx",
-                                        lineNumber: 228,
-                                        columnNumber: 37
+                                        lineNumber: 211,
+                                        columnNumber: 41
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         style: {
@@ -7166,14 +7125,14 @@ const CalendarView = ({ logs, staffMembers, isAdmin })=>{
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/StaffLogsView.tsx",
-                                                        lineNumber: 233,
-                                                        columnNumber: 49
+                                                        lineNumber: 216,
+                                                        columnNumber: 53
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                                lineNumber: 230,
-                                                columnNumber: 41
+                                                lineNumber: 213,
+                                                columnNumber: 45
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             log.block && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 style: {
@@ -7192,47 +7151,428 @@ const CalendarView = ({ logs, staffMembers, isAdmin })=>{
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                                lineNumber: 239,
-                                                columnNumber: 45
+                                                lineNumber: 222,
+                                                columnNumber: 49
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/StaffLogsView.tsx",
-                                        lineNumber: 229,
-                                        columnNumber: 37
+                                        lineNumber: 212,
+                                        columnNumber: 41
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/StaffLogsView.tsx",
-                                lineNumber: 227,
-                                columnNumber: 33
+                                lineNumber: 210,
+                                columnNumber: 37
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            log.imageUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>setSelectedImage(log.imageUrl || null),
+                                style: {
+                                    width: 32,
+                                    height: 32,
+                                    borderRadius: 8,
+                                    border: 'none',
+                                    background: 'var(--blue-light)',
+                                    color: 'var(--blue)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer'
+                                },
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Image$3e$__["Image"], {
+                                    size: 16
+                                }, void 0, false, {
+                                    fileName: "[project]/components/StaffLogsView.tsx",
+                                    lineNumber: 237,
+                                    columnNumber: 45
+                                }, ("TURBOPACK compile-time value", void 0))
+                            }, void 0, false, {
+                                fileName: "[project]/components/StaffLogsView.tsx",
+                                lineNumber: 229,
+                                columnNumber: 41
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, log.id, true, {
                         fileName: "[project]/components/StaffLogsView.tsx",
-                        lineNumber: 219,
-                        columnNumber: 29
+                        lineNumber: 202,
+                        columnNumber: 33
                     }, ("TURBOPACK compile-time value", void 0));
                 })
             }, void 0, false, {
                 fileName: "[project]/components/StaffLogsView.tsx",
-                lineNumber: 212,
+                lineNumber: 193,
+                columnNumber: 17
+            }, ("TURBOPACK compile-time value", void 0)) : // Housekeeping Review Grid
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 24
+                },
+                children: __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BUILDING_STRUCTURE"].map((block)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "neu-card",
+                        style: {
+                            padding: 16
+                        },
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                style: {
+                                    margin: '0 0 12px 0',
+                                    fontSize: 14,
+                                    color: 'var(--text-muted)',
+                                    textTransform: 'uppercase'
+                                },
+                                children: [
+                                    "Block ",
+                                    block.block
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/components/StaffLogsView.tsx",
+                                lineNumber: 250,
+                                columnNumber: 29
+                            }, ("TURBOPACK compile-time value", void 0)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                style: {
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: 8
+                                },
+                                children: __TURBOPACK__imported__module__$5b$project$5d2f$types$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FLOORS"].map((floor)=>{
+                                    const flats = block.flatsPerFloor(floor);
+                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        style: {
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 10
+                                        },
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                style: {
+                                                    fontSize: 11,
+                                                    fontWeight: 600,
+                                                    color: 'var(--text-muted)',
+                                                    width: 24
+                                                },
+                                                children: [
+                                                    floor,
+                                                    "F"
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/components/StaffLogsView.tsx",
+                                                lineNumber: 256,
+                                                columnNumber: 45
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                style: {
+                                                    display: 'flex',
+                                                    flexWrap: 'wrap',
+                                                    gap: 8
+                                                },
+                                                children: flats.map((flat)=>{
+                                                    // Find log for this flat
+                                                    const log = dateFilteredLogs.find((l)=>l.block === block.block && l.floor === floor && l.flat === flat && l.status === 'COMPLETED');
+                                                    const isDone = !!log;
+                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                        onClick: ()=>log?.imageUrl && setSelectedImage(log.imageUrl),
+                                                        disabled: !log?.imageUrl,
+                                                        style: {
+                                                            width: 42,
+                                                            height: 36,
+                                                            borderRadius: 6,
+                                                            border: 'none',
+                                                            background: isDone ? 'var(--green)' : 'var(--bg-inset)',
+                                                            color: isDone ? 'white' : 'var(--text-muted)',
+                                                            fontSize: 11,
+                                                            fontWeight: 700,
+                                                            cursor: log?.imageUrl ? 'pointer' : 'default',
+                                                            opacity: isDone ? 1 : 0.5,
+                                                            position: 'relative'
+                                                        },
+                                                        children: [
+                                                            flat,
+                                                            isDone && log?.imageUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                style: {
+                                                                    position: 'absolute',
+                                                                    top: -2,
+                                                                    right: -2,
+                                                                    width: 8,
+                                                                    height: 8,
+                                                                    borderRadius: '50%',
+                                                                    background: 'var(--blue)',
+                                                                    border: '1px solid white'
+                                                                }
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/StaffLogsView.tsx",
+                                                                lineNumber: 284,
+                                                                columnNumber: 65
+                                                            }, ("TURBOPACK compile-time value", void 0))
+                                                        ]
+                                                    }, flat, true, {
+                                                        fileName: "[project]/components/StaffLogsView.tsx",
+                                                        lineNumber: 268,
+                                                        columnNumber: 57
+                                                    }, ("TURBOPACK compile-time value", void 0));
+                                                })
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/StaffLogsView.tsx",
+                                                lineNumber: 257,
+                                                columnNumber: 45
+                                            }, ("TURBOPACK compile-time value", void 0))
+                                        ]
+                                    }, floor, true, {
+                                        fileName: "[project]/components/StaffLogsView.tsx",
+                                        lineNumber: 255,
+                                        columnNumber: 41
+                                    }, ("TURBOPACK compile-time value", void 0));
+                                })
+                            }, void 0, false, {
+                                fileName: "[project]/components/StaffLogsView.tsx",
+                                lineNumber: 251,
+                                columnNumber: 29
+                            }, ("TURBOPACK compile-time value", void 0))
+                        ]
+                    }, block.block, true, {
+                        fileName: "[project]/components/StaffLogsView.tsx",
+                        lineNumber: 249,
+                        columnNumber: 25
+                    }, ("TURBOPACK compile-time value", void 0)))
+            }, void 0, false, {
+                fileName: "[project]/components/StaffLogsView.tsx",
+                lineNumber: 247,
+                columnNumber: 17
+            }, ("TURBOPACK compile-time value", void 0))
+        ]
+    }, void 0, true, {
+        fileName: "[project]/components/StaffLogsView.tsx",
+        lineNumber: 58,
+        columnNumber: 9
+    }, ("TURBOPACK compile-time value", void 0));
+};
+_s(StaffLogsView, "/5TYEewEoY3hdHl5wSll5bB05ug=");
+_c = StaffLogsView;
+const StatItem = ({ icon, count, label, color })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        style: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 6
+        },
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    width: 36,
+                    height: 36,
+                    borderRadius: 12,
+                    background: 'var(--bg-card)',
+                    boxShadow: 'var(--neu-raised-sm)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: color
+                },
+                children: icon
+            }, void 0, false, {
+                fileName: "[project]/components/StaffLogsView.tsx",
+                lineNumber: 305,
+                columnNumber: 9
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    fontSize: 16,
+                    fontWeight: 800,
+                    color: 'var(--text-primary)'
+                },
+                children: count
+            }, void 0, false, {
+                fileName: "[project]/components/StaffLogsView.tsx",
+                lineNumber: 312,
+                columnNumber: 9
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    fontSize: 10,
+                    fontWeight: 600,
+                    color: 'var(--text-muted)'
+                },
+                children: label
+            }, void 0, false, {
+                fileName: "[project]/components/StaffLogsView.tsx",
+                lineNumber: 313,
+                columnNumber: 9
+            }, ("TURBOPACK compile-time value", void 0))
+        ]
+    }, void 0, true, {
+        fileName: "[project]/components/StaffLogsView.tsx",
+        lineNumber: 304,
+        columnNumber: 5
+    }, ("TURBOPACK compile-time value", void 0));
+_c1 = StatItem;
+const CalendarPicker = ({ selectedDate, onSelect, logs })=>{
+    _s1();
+    const [viewDate, setViewDate] = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].useState(new Date(selectedDate));
+    const daysInMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate();
+    const firstDay = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1).getDay();
+    const days = Array.from({
+        length: daysInMonth
+    }, (_, i)=>i + 1);
+    const blanks = Array.from({
+        length: firstDay
+    }, (_, i)=>i);
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: 16
+                },
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1)),
+                        style: {
+                            border: 'none',
+                            background: 'none',
+                            fontSize: 18,
+                            cursor: 'pointer',
+                            color: 'var(--text-primary)'
+                        },
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__["ChevronLeft"], {
+                            size: 20
+                        }, void 0, false, {
+                            fileName: "[project]/components/StaffLogsView.tsx",
+                            lineNumber: 331,
+                            columnNumber: 21
+                        }, ("TURBOPACK compile-time value", void 0))
+                    }, void 0, false, {
+                        fileName: "[project]/components/StaffLogsView.tsx",
+                        lineNumber: 330,
+                        columnNumber: 17
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                        style: {
+                            fontSize: 16,
+                            fontWeight: 700,
+                            color: 'var(--text-primary)'
+                        },
+                        children: viewDate.toLocaleDateString('en-IN', {
+                            month: 'long',
+                            year: 'numeric'
+                        })
+                    }, void 0, false, {
+                        fileName: "[project]/components/StaffLogsView.tsx",
+                        lineNumber: 333,
+                        columnNumber: 17
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1)),
+                        style: {
+                            border: 'none',
+                            background: 'none',
+                            fontSize: 18,
+                            cursor: 'pointer',
+                            color: 'var(--text-primary)'
+                        },
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
+                            size: 20
+                        }, void 0, false, {
+                            fileName: "[project]/components/StaffLogsView.tsx",
+                            lineNumber: 335,
+                            columnNumber: 21
+                        }, ("TURBOPACK compile-time value", void 0))
+                    }, void 0, false, {
+                        fileName: "[project]/components/StaffLogsView.tsx",
+                        lineNumber: 334,
+                        columnNumber: 17
+                    }, ("TURBOPACK compile-time value", void 0))
+                ]
+            }, void 0, true, {
+                fileName: "[project]/components/StaffLogsView.tsx",
+                lineNumber: 329,
+                columnNumber: 13
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                style: {
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(7, 1fr)',
+                    gap: 8,
+                    textAlign: 'center'
+                },
+                children: [
+                    [
+                        'S',
+                        'M',
+                        'T',
+                        'W',
+                        'T',
+                        'F',
+                        'S'
+                    ].map((d, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            style: {
+                                fontSize: 10,
+                                fontWeight: 700,
+                                color: 'var(--text-muted)'
+                            },
+                            children: d
+                        }, `${d}-${i}`, false, {
+                            fileName: "[project]/components/StaffLogsView.tsx",
+                            lineNumber: 341,
+                            columnNumber: 68
+                        }, ("TURBOPACK compile-time value", void 0))),
+                    blanks.map((b, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {}, `blank-${i}`, false, {
+                            fileName: "[project]/components/StaffLogsView.tsx",
+                            lineNumber: 342,
+                            columnNumber: 39
+                        }, ("TURBOPACK compile-time value", void 0))),
+                    days.map((d)=>{
+                        const currentDayDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), d);
+                        const dateStr = currentDayDate.setHours(0, 0, 0, 0);
+                        const hasLogs = logs.some((l)=>new Date(l.timestamp).setHours(0, 0, 0, 0) === dateStr);
+                        const isSelected = d === selectedDate.getDate() && viewDate.getMonth() === selectedDate.getMonth() && viewDate.getFullYear() === selectedDate.getFullYear();
+                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: ()=>onSelect(new Date(viewDate.getFullYear(), viewDate.getMonth(), d)),
+                            style: {
+                                width: 32,
+                                height: 32,
+                                borderRadius: '50%',
+                                border: 'none',
+                                cursor: 'pointer',
+                                background: isSelected ? 'var(--blue)' : hasLogs ? 'var(--green-light)' : 'transparent',
+                                color: isSelected ? 'white' : hasLogs ? 'var(--green)' : 'var(--text-primary)',
+                                fontWeight: isSelected || hasLogs ? 700 : 400,
+                                margin: '0 auto',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            },
+                            children: d
+                        }, d, false, {
+                            fileName: "[project]/components/StaffLogsView.tsx",
+                            lineNumber: 350,
+                            columnNumber: 25
+                        }, ("TURBOPACK compile-time value", void 0));
+                    })
+                ]
+            }, void 0, true, {
+                fileName: "[project]/components/StaffLogsView.tsx",
+                lineNumber: 340,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/components/StaffLogsView.tsx",
-        lineNumber: 174,
+        lineNumber: 327,
         columnNumber: 9
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s1(CalendarView, "mu4fg2bVP7ctA7Sx6pVThSFlyto=");
-_c2 = CalendarView;
+_s1(CalendarPicker, "fP3KZJdEzR9d7/qrOtK3BmNguwI=");
+_c2 = CalendarPicker;
 const __TURBOPACK__default__export__ = StaffLogsView;
 var _c, _c1, _c2;
 __turbopack_context__.k.register(_c, "StaffLogsView");
 __turbopack_context__.k.register(_c1, "StatItem");
-__turbopack_context__.k.register(_c2, "CalendarView");
+__turbopack_context__.k.register(_c2, "CalendarPicker");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }

@@ -1,8 +1,8 @@
 "use client"
-import React, { useMemo } from 'react';
-import { TaskLog, StaffMember, TaskType } from '../types';
+import React, { useMemo, useState } from 'react';
+import { TaskLog, StaffMember, TaskType, BUILDING_STRUCTURE, FLOORS } from '../types';
 import { getTaskIcon } from '../constants';
-import { Activity, Calendar, Award, Trash2, Wind, Sparkles } from 'lucide-react';
+import { Activity, Calendar, Award, Trash2, Wind, Sparkles, ChevronLeft, ChevronRight, X, Image as ImageIcon, Grid, List } from 'lucide-react';
 
 interface StaffLogsViewProps {
     currentUser: number;
@@ -12,10 +12,18 @@ interface StaffLogsViewProps {
 }
 
 const StaffLogsView: React.FC<StaffLogsViewProps> = ({ currentUser, logs, staffMembers, isAdmin = false }) => {
+    const [viewMode, setViewMode] = useState<'ACTIVITY' | 'REVIEW'>('ACTIVITY');
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [showCalendar, setShowCalendar] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
     // Filter logs for current user (or all if admin)
     const displayLogs = useMemo(() => {
-        if (isAdmin) return logs.sort((a, b) => b.timestamp - a.timestamp);
-        return logs.filter(l => l.staffId === currentUser).sort((a, b) => b.timestamp - a.timestamp);
+        let filtered = logs;
+        if (!isAdmin) {
+            filtered = logs.filter(l => l.staffId === currentUser);
+        }
+        return filtered.sort((a, b) => b.timestamp - a.timestamp);
     }, [logs, currentUser, isAdmin]);
 
     const today = new Date().setHours(0, 0, 0, 0);
@@ -35,40 +43,56 @@ const StaffLogsView: React.FC<StaffLogsViewProps> = ({ currentUser, logs, staffM
         return { todayCount, weekCount, breakdown: { garbage, brooming, mopping, other } };
     }, [displayLogs, today, weekAgo]);
 
-    // Group logs by date
-    const groupedLogs = useMemo(() => {
-        const groups: { [key: string]: TaskLog[] } = {};
-        displayLogs.forEach(log => {
-            const date = new Date(log.timestamp).toLocaleDateString('en-IN', {
-                day: 'numeric', month: 'short', year: 'numeric'
-            });
-            if (!groups[date]) groups[date] = [];
-            groups[date].push(log);
+    const dateFilteredLogs = useMemo(() => {
+        return displayLogs.filter(l => {
+            const d = new Date(l.timestamp);
+            return d.getDate() === selectedDate.getDate() &&
+                d.getMonth() === selectedDate.getMonth() &&
+                d.getFullYear() === selectedDate.getFullYear();
         });
-        return groups;
-    }, [displayLogs]);
+    }, [displayLogs, selectedDate]);
 
-    // Helper to determine task label from ID (simple heuristic since task definitions are dynamic now)
-    const getTaskLabel = (taskId: string) => {
-        if (taskId.includes('garbage')) return 'Garbage Collection';
-        if (taskId.includes('broom')) return 'Brooming';
-        if (taskId.includes('mop')) return 'Mopping';
-        if (taskId.includes('glass')) return 'Glass Cleaning';
-        if (taskId.includes('driveway')) return 'Driveway Cleaning';
-        return 'Task Completed';
-    };
-
-    const getTaskType = (taskId: string): TaskType => {
-        if (taskId.includes('Routine') || taskId.includes('Garbage')) return TaskType.ROUTINE_HOUSEKEEPING;
-        if (taskId.includes('broom')) return TaskType.BROOMING;
-        if (taskId.includes('mop')) return TaskType.MOPPING;
-        if (taskId.includes('glass')) return TaskType.GLASS_CLEANING;
-        if (taskId.includes('driveway')) return TaskType.DRIVEWAY;
-        return TaskType.GLASS_CLEANING; // Default fallback
-    };
+    // Group logs by date for list view (if needed, but we are focusing on date selection now)
 
     return (
         <div className="animate-in">
+            {/* Image Modal */}
+            {selectedImage && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0,0,0,0.9)', zIndex: 2000,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    padding: 20
+                }} onClick={() => setSelectedImage(null)}>
+                    <div style={{ position: 'relative', maxWidth: '100%', maxHeight: '90%' }}>
+                        <button
+                            onClick={() => setSelectedImage(null)}
+                            style={{
+                                position: 'absolute', top: -40, right: 0,
+                                background: 'none', border: 'none', color: 'white'
+                            }}
+                        >
+                            <X size={24} />
+                        </button>
+                        <img src={selectedImage} alt="Proof" style={{ maxWidth: '100%', maxHeight: '80vh', borderRadius: 8 }} />
+                    </div>
+                </div>
+            )}
+
+            {/* Calendar Modal */}
+            {showCalendar && (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0,0,0,0.5)', zIndex: 1000,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                }} onClick={() => setShowCalendar(false)}>
+                    <div className="neu-card" style={{ padding: 20, background: 'var(--bg-card)', width: 320 }} onClick={e => e.stopPropagation()}>
+                        <CalendarPicker selectedDate={selectedDate} onSelect={(d) => { setSelectedDate(d); setShowCalendar(false); }} logs={displayLogs} />
+                        <button className="neu-button" style={{ width: '100%', marginTop: 16 }} onClick={() => setShowCalendar(false)}>Close</button>
+                    </div>
+                </div>
+            )}
+
             <div className="section-header">
                 <span className="section-title">Performance Overview</span>
                 <span className="section-label">LIVE STATS</span>
@@ -113,26 +137,162 @@ const StaffLogsView: React.FC<StaffLogsViewProps> = ({ currentUser, logs, staffM
                 </div>
             </div>
 
+            {/* View Controls */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+                <div style={{ display: 'flex', gap: 8, background: 'var(--bg-inset)', padding: 4, borderRadius: 12 }}>
+                    <button
+                        onClick={() => setViewMode('ACTIVITY')}
+                        style={{
+                            padding: '8px 16px', borderRadius: 8, border: 'none',
+                            background: viewMode === 'ACTIVITY' ? 'var(--bg-card)' : 'transparent',
+                            color: viewMode === 'ACTIVITY' ? 'var(--blue)' : 'var(--text-muted)',
+                            fontWeight: 700, fontSize: 12, cursor: 'pointer',
+                            boxShadow: viewMode === 'ACTIVITY' ? 'var(--neu-raised-sm)' : 'none',
+                            display: 'flex', alignItems: 'center', gap: 6
+                        }}
+                    >
+                        <List size={14} /> Activity
+                    </button>
+                    {(isAdmin || true) && ( // Allow everyone to see for now, or strict admin check
+                        <button
+                            onClick={() => setViewMode('REVIEW')}
+                            style={{
+                                padding: '8px 16px', borderRadius: 8, border: 'none',
+                                background: viewMode === 'REVIEW' ? 'var(--bg-card)' : 'transparent',
+                                color: viewMode === 'REVIEW' ? 'var(--blue)' : 'var(--text-muted)',
+                                fontWeight: 700, fontSize: 12, cursor: 'pointer',
+                                boxShadow: viewMode === 'REVIEW' ? 'var(--neu-raised-sm)' : 'none',
+                                display: 'flex', alignItems: 'center', gap: 6
+                            }}
+                        >
+                            <Grid size={14} /> Review
+                        </button>
+                    )}
+                </div>
+
+                <button
+                    onClick={() => setShowCalendar(true)}
+                    className="neu-button"
+                    style={{ padding: '8px 12px', fontSize: 12, background: 'var(--bg-card)', color: 'var(--text-primary)' }}
+                >
+                    📅 {selectedDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                </button>
+            </div>
+
             <div className="section-header">
-                <span className="section-title">Activity History</span>
+                <span className="section-title">
+                    {viewMode === 'ACTIVITY' ? 'Activity Log' : 'Housekeeping Review'}
+                </span>
+                <span className="section-label">
+                    {selectedDate.toLocaleDateString('en-IN', { weekday: 'long', month: 'long', day: 'numeric' })}
+                </span>
             </div>
 
-            {/* History List */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            </div>
-
-
-            {/* Simplified Calendar View Placeholder (since actual calendar component is complex, simplified to date picker style for now or just list) 
-                    Reverting to list as per user request for "Calendar Format" which implies a visual calendar is desired.
-                    Implementing a simple month view.
-                */}
-            <CalendarView logs={displayLogs} staffMembers={staffMembers} isAdmin={isAdmin} />
-
-            {displayLogs.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
-                    <div style={{ fontSize: 40, marginBottom: 10 }}>📜</div>
-                    <div style={{ fontWeight: 600 }}>No logs found</div>
-                    <div style={{ fontSize: 12 }}>Get started by completing tasks!</div>
+            {viewMode === 'ACTIVITY' ? (
+                // Activity List View
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {dateFilteredLogs.length === 0 ? (
+                        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 40, fontSize: 13 }}>
+                            No activity recorded for this date
+                        </div>
+                    ) : (
+                        dateFilteredLogs.map(log => {
+                            const staff = staffMembers.find(s => s.id === log.staffId);
+                            return (
+                                <div key={log.id} className="neu-card" style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px' }}>
+                                    <div style={{
+                                        width: 36, height: 36, borderRadius: 12, background: 'var(--bg-inset)',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
+                                        flexShrink: 0
+                                    }}>
+                                        {getTaskIcon(log.taskId.includes('Routine') ? TaskType.ROUTINE_HOUSEKEEPING : TaskType.GLASS_CLEANING)}
+                                    </div>
+                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                        <div style={{ fontSize: 14, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{log.taskId}</div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
+                                            <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                                                {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                {isAdmin && staff && (
+                                                    <span style={{ color: 'var(--blue)', fontWeight: 600, marginLeft: 6 }}>
+                                                        • {staff.name.split(' ')[0]}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            {log.block && (
+                                                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-secondary)', background: 'var(--bg-inset)', padding: '2px 6px', borderRadius: 4 }}>
+                                                    B{log.block} {log.flat ? `- ${log.flat}` : ''}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {log.imageUrl && (
+                                        <button
+                                            onClick={() => setSelectedImage(log.imageUrl || null)}
+                                            style={{
+                                                width: 32, height: 32, borderRadius: 8, border: 'none',
+                                                background: 'var(--blue-light)', color: 'var(--blue)',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+                                            }}
+                                        >
+                                            <ImageIcon size={16} />
+                                        </button>
+                                    )}
+                                </div>
+                            );
+                        })
+                    )}
+                </div>
+            ) : (
+                // Housekeeping Review Grid
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                    {BUILDING_STRUCTURE.map(block => (
+                        <div key={block.block} className="neu-card" style={{ padding: 16 }}>
+                            <h3 style={{ margin: '0 0 12px 0', fontSize: 14, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Block {block.block}</h3>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                {FLOORS.map(floor => {
+                                    const flats = block.flatsPerFloor(floor);
+                                    return (
+                                        <div key={floor} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                            <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', width: 24 }}>{floor}F</span>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                                                {flats.map(flat => {
+                                                    // Find log for this flat
+                                                    const log = dateFilteredLogs.find(l =>
+                                                        l.block === block.block &&
+                                                        l.floor === floor &&
+                                                        l.flat === flat &&
+                                                        l.status === 'COMPLETED'
+                                                    );
+                                                    const isDone = !!log;
+                                                    return (
+                                                        <button
+                                                            key={flat}
+                                                            onClick={() => log?.imageUrl && setSelectedImage(log.imageUrl)}
+                                                            disabled={!log?.imageUrl}
+                                                            style={{
+                                                                width: 42, height: 36, borderRadius: 6, border: 'none',
+                                                                background: isDone ? 'var(--green)' : 'var(--bg-inset)',
+                                                                color: isDone ? 'white' : 'var(--text-muted)',
+                                                                fontSize: 11, fontWeight: 700,
+                                                                cursor: log?.imageUrl ? 'pointer' : 'default',
+                                                                opacity: isDone ? 1 : 0.5,
+                                                                position: 'relative'
+                                                            }}
+                                                        >
+                                                            {flat}
+                                                            {isDone && log?.imageUrl && (
+                                                                <div style={{ position: 'absolute', top: -2, right: -2, width: 8, height: 8, borderRadius: '50%', background: 'var(--blue)', border: '1px solid white' }} />
+                                                            )}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
@@ -154,98 +314,54 @@ const StatItem: React.FC<{ icon: React.ReactNode; count: number; label: string; 
     </div>
 );
 
-const CalendarView: React.FC<{ logs: TaskLog[]; staffMembers: StaffMember[]; isAdmin: boolean }> = ({ logs, staffMembers, isAdmin }) => {
-    const [selectedDate, setSelectedDate] = React.useState(new Date());
+const CalendarPicker: React.FC<{ selectedDate: Date; onSelect: (d: Date) => void; logs: TaskLog[] }> = ({ selectedDate, onSelect, logs }) => {
+    const [viewDate, setViewDate] = React.useState(new Date(selectedDate));
 
-    const daysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
-    const firstDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1).getDay();
+    const daysInMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate();
+    const firstDay = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1).getDay();
 
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
     const blanks = Array.from({ length: firstDay }, (_, i) => i);
 
-    const selectedDetails = logs.filter(l => {
-        const d = new Date(l.timestamp);
-        return d.getDate() === selectedDate.getDate() &&
-            d.getMonth() === selectedDate.getMonth() &&
-            d.getFullYear() === selectedDate.getFullYear();
-    });
-
     return (
-        <div className="animate-in">
-            <div className="neu-card" style={{ padding: 20, marginBottom: 20 }}>
-                {/* Month Header */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                    <button onClick={() => setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth() - 1, 1))} style={{ border: 'none', background: 'none', fontSize: 18, cursor: 'pointer' }}>←</button>
-                    <span style={{ fontSize: 16, fontWeight: 700 }}>{selectedDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</span>
-                    <button onClick={() => setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 1))} style={{ border: 'none', background: 'none', fontSize: 18, cursor: 'pointer' }}>→</button>
-                </div>
-
-                {/* Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 8, textAlign: 'center' }}>
-                    {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => <div key={d} style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)' }}>{d}</div>)}
-                    {blanks.map(b => <div key={`blank-${b}`} />)}
-                    {days.map(d => {
-                        const dateStr = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), d).setHours(0, 0, 0, 0);
-                        const hasLogs = logs.some(l => new Date(l.timestamp).setHours(0, 0, 0, 0) === dateStr);
-                        const isSelected = d === selectedDate.getDate();
-
-                        return (
-                            <button
-                                key={d}
-                                onClick={() => setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), d))}
-                                style={{
-                                    width: 32, height: 32, borderRadius: '50%', border: 'none', cursor: 'pointer',
-                                    background: isSelected ? 'var(--blue)' : hasLogs ? 'var(--green-light)' : 'transparent',
-                                    color: isSelected ? 'white' : hasLogs ? 'var(--green)' : 'var(--text-primary)',
-                                    fontWeight: isSelected || hasLogs ? 700 : 400,
-                                    margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                                }}
-                            >
-                                {d}
-                            </button>
-                        );
-                    })}
-                </div>
+        <div>
+            {/* Month Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                <button onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))} style={{ border: 'none', background: 'none', fontSize: 18, cursor: 'pointer', color: 'var(--text-primary)' }}>
+                    <ChevronLeft size={20} />
+                </button>
+                <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)' }}>{viewDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</span>
+                <button onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))} style={{ border: 'none', background: 'none', fontSize: 18, cursor: 'pointer', color: 'var(--text-primary)' }}>
+                    <ChevronRight size={20} />
+                </button>
             </div>
 
-            {/* Selected Day Logs */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {selectedDetails.length === 0 ? (
-                    <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 20, fontSize: 13 }}>No activity on this date</div>
-                ) : (
-                    selectedDetails.map(log => {
-                        const staff = staffMembers.find(s => s.id === log.staffId);
-                        return (
-                            <div key={log.id} className="neu-card" style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px' }}>
-                                <div style={{
-                                    width: 36, height: 36, borderRadius: 12, background: 'var(--bg-inset)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
-                                    flexShrink: 0
-                                }}>
-                                    {getTaskIcon(log.taskId.includes('Routine') ? TaskType.ROUTINE_HOUSEKEEPING : TaskType.GLASS_CLEANING)}
-                                </div>
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                    <div style={{ fontSize: 14, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{log.taskId}</div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
-                                        <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-                                            {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            {isAdmin && staff && (
-                                                <span style={{ color: 'var(--blue)', fontWeight: 600, marginLeft: 6 }}>
-                                                    • {staff.name.split(' ')[0]}
-                                                </span>
-                                            )}
-                                        </div>
-                                        {log.block && (
-                                            <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-secondary)', background: 'var(--bg-inset)', padding: '2px 6px', borderRadius: 4 }}>
-                                                B{log.block} {log.flat ? `- ${log.flat}` : ''}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })
-                )}
+            {/* Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 8, textAlign: 'center' }}>
+                {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => <div key={`${d}-${i}`} style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)' }}>{d}</div>)}
+                {blanks.map((b, i) => <div key={`blank-${i}`} />)}
+                {days.map(d => {
+                    const currentDayDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), d);
+                    const dateStr = currentDayDate.setHours(0, 0, 0, 0);
+                    const hasLogs = logs.some(l => new Date(l.timestamp).setHours(0, 0, 0, 0) === dateStr);
+                    const isSelected = d === selectedDate.getDate() && viewDate.getMonth() === selectedDate.getMonth() && viewDate.getFullYear() === selectedDate.getFullYear();
+
+                    return (
+                        <button
+                            key={d}
+                            onClick={() => onSelect(new Date(viewDate.getFullYear(), viewDate.getMonth(), d))}
+                            style={{
+                                width: 32, height: 32, borderRadius: '50%', border: 'none', cursor: 'pointer',
+                                background: isSelected ? 'var(--blue)' : hasLogs ? 'var(--green-light)' : 'transparent',
+                                color: isSelected ? 'white' : hasLogs ? 'var(--green)' : 'var(--text-primary)',
+                                fontWeight: isSelected || hasLogs ? 700 : 400,
+                                margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                            }}
+                        >
+                            {d}
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );
